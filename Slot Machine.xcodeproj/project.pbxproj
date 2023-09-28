@@ -24,6 +24,7 @@
 		3088D8762AC57BEB00491BD3 /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3088D8752AC57BEB00491BD3 /* Modifiers.swift */; };
 		3088D8782AC57EF700491BD3 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3088D8772AC57EF700491BD3 /* Extensions.swift */; };
 		3088D87A2AC5883800491BD3 /* ReelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3088D8792AC5883800491BD3 /* ReelView.swift */; };
+		3088D87C2AC58F9B00491BD3 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3088D87B2AC58F9B00491BD3 /* InfoView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		3088D8752AC57BEB00491BD3 /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
 		3088D8772AC57EF700491BD3 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		3088D8792AC5883800491BD3 /* ReelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReelView.swift; sourceTree = "<group>"; };
+		3088D87B2AC58F9B00491BD3 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 				3088D8522AC5745A00491BD3 /* ContentView.swift */,
 				3088D8732AC57BBD00491BD3 /* LogoView.swift */,
 				3088D8792AC5883800491BD3 /* ReelView.swift */,
+				3088D87B2AC58F9B00491BD3 /* InfoView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -208,6 +211,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3088D87C2AC58F9B00491BD3 /* InfoView.swift in Sources */,
 				3088D8532AC5745A00491BD3 /* ContentView.swift in Sources */,
 				3088D8782AC57EF700491BD3 /* Extensions.swift in Sources */,
 				3088D8742AC57BBD00491BD3 /* LogoView.swift in Sources */,
