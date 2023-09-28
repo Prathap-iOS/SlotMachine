@@ -12,7 +12,7 @@ struct ContentView: View {
     
     let symbols = ["gfx-bell", "gfx-cherry", "gfx-coin", "gfx-grape", "gfx-seven", "gfx-strawberry"]
     
-    @State private var highScore: Int = 0
+    @State private var highScore: Int = UserDefaults.standard.integer(forKey: "HighScore")
     @State private var coins: Int = 100
     @State private var betAmount: Int = 10
     @State private var reels: Array = [0, 1, 2]
@@ -20,6 +20,8 @@ struct ContentView: View {
     @State private var isActiveBet10: Bool = true
     @State private var isActiveBet20: Bool = false
     @State private var showingModel: Bool = false
+    @State private var animatingSymbol: Bool = false
+    @State private var animatingModel: Bool = false
     
     // MARK: - FUNCTIONS
     
@@ -52,6 +54,7 @@ struct ContentView: View {
     
     func newHighScore() {
         highScore = coins
+        UserDefaults.standard.set(highScore, forKey: "HighScore")
     }
     
     func playerLoses() {
@@ -75,6 +78,13 @@ struct ContentView: View {
             // SHOW MODEL WINDOW
             showingModel = true
         }
+    }
+    
+    func resetGame() {
+        UserDefaults.standard.set(0, forKey: "HighScore")
+        highScore = 0
+        coins = 100
+        activateBet10()
     }
     
     // MARK: - BODY
@@ -128,6 +138,12 @@ struct ContentView: View {
                         Image(symbols[reels[0]])
                             .resizable()
                             .modifier(ImageModifier())
+                            .opacity(animatingSymbol ? 1 : 0)
+                            .offset(y: animatingSymbol ? 0 : -50)
+                            .animation(.easeOut(duration: Double.random(in: 0.5...0.7)))
+                            .onAppear(perform: {
+                                self.animatingSymbol.toggle()
+                            })
                     }
                     
                     HStack(alignment: .center, spacing: 0) {
@@ -137,6 +153,12 @@ struct ContentView: View {
                             Image(symbols[reels[1]])
                                 .resizable()
                                 .modifier(ImageModifier())
+                                .opacity(animatingSymbol ? 1 : 0)
+                                .offset(y: animatingSymbol ? 0 : -50)
+                                .animation(.easeOut(duration: Double.random(in: 0.7...0.9)))
+                                .onAppear(perform: {
+                                    self.animatingSymbol.toggle()
+                                })
                         }
                         
                         Spacer()
@@ -147,19 +169,35 @@ struct ContentView: View {
                             Image(symbols[reels[2]])
                                 .resizable()
                                 .modifier(ImageModifier())
+                                .opacity(animatingSymbol ? 1 : 0)
+                                .offset(y: animatingSymbol ? 0 : -50)
+                                .animation(.easeOut(duration: Double.random(in: 0.9...1.1)))
+                                .onAppear(perform: {
+                                    self.animatingSymbol.toggle()
+                                })
                         }
                     }
                     .frame(maxWidth: 500)
                     
                     // MARK: - SPIN BUTTON
                     Button(action: {
-                        // SPIN THE REELS
+                        // 1. SET THE DEFAULT STATE: NO ANIMATION
+                        withAnimation {
+                            self.animatingSymbol = false
+                        }
+                        
+                        // 2. SPIN THE REELS WITH CHANGE THE SYMBOLS
                         self.spinReels()
                         
-                        // CHECK WINNIG
+                        // 3. TRIGGERT THE ANIMATION AFTER CHANGING THE SYMBOLS
+                        withAnimation {
+                            self.animatingSymbol = true
+                        }
+                        
+                        // 4. CHECK WINNIG
                         self.checkWinning()
                         
-                        // GAME IS OVER
+                        // 5. GAME IS OVER
                         self.isGameOver()
                     }, label: {
                         Image("gfx-spin")
@@ -188,14 +226,18 @@ struct ContentView: View {
                         
                         Image("gfx-casino-chips")
                             .resizable()
+                            .offset(x: isActiveBet20 ? 0 : 20)
                             .opacity(isActiveBet20 ? 1 : 0)
                             .modifier(CasinoChipsModifier())
                     }
+                    
+                    Spacer()
                     
                     // MARK: - BET 10
                     HStack(alignment: .center, spacing: 10) {
                         Image("gfx-casino-chips")
                             .resizable()
+                            .offset(x: isActiveBet10 ? 0 : -20)
                             .opacity(isActiveBet10 ? 1 : 0)
                             .modifier(CasinoChipsModifier())
                         
@@ -215,7 +257,7 @@ struct ContentView: View {
             .overlay(
                 // RESET
                 Button(action: {
-                    print("Reset the game")
+                    self.resetGame()
                 }) {
                     Image(systemName: "arrow.2.circlepath.circle")
                 }
@@ -270,6 +312,8 @@ struct ContentView: View {
                             
                             Button(action: {
                                 self.showingModel = false
+                                self.animatingModel = false
+                                self.activateBet10()
                                 self.coins = 100
                             }, label: {
                                 Text("New Game".uppercased())
@@ -293,6 +337,12 @@ struct ContentView: View {
                     .background(.white)
                     .cornerRadius(20)
                     .shadow(color: Color("ColorTransparentBlack"), radius: 6, x: 0, y: 8)
+                    .opacity($animatingModel.wrappedValue ? 1 : 0)
+                    .offset(y: $animatingModel.wrappedValue ? 0 : -100)
+                    .animation(Animation.spring(response: 0.6, dampingFraction: 1.0, blendDuration: 1.0))
+                    .onAppear(perform: {
+                        self.animatingModel = true
+                    })
                 }
             }
             
