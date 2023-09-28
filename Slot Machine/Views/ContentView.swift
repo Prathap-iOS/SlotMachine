@@ -283,6 +283,7 @@ struct ContentView: View {
                     self.showingInfoView = true
                 }) {
                     Image(systemName: "info.circle")
+                        .foregroundColor(.white)
                 }
                     .modifier(ButtonModifier()),
                 alignment: .topTrailing
@@ -294,70 +295,70 @@ struct ContentView: View {
             // MARK: - POPUP
             if $showingModel.wrappedValue {
                 ZStack {
-                    Color("ColorTransparentBlack").edgesIgnoringSafeArea(.all)
+                  Color("ColorTransparentBlack").edgesIgnoringSafeArea(.all)
+                  
+                  // MODAL
+                  VStack(spacing: 0) {
+                    // TITLE
+                    Text("GAME OVER")
+                      .font(.system(.title, design: .rounded))
+                      .fontWeight(.heavy)
+                      .padding()
+                      .frame(minWidth: 0, maxWidth: .infinity)
+                      .background(Color("ColorPink"))
+                      .foregroundColor(Color.white)
                     
-                    // MODEL
-                    VStack(spacing: 0) {
-                        // TITLE
-                        Text("GAME OVER")
-                            .font(.system(.title, design: .rounded))
-                            .fontWeight(.heavy)
-                            .padding()
-                            .frame(minWidth: 0, maxWidth: .infinity)
-                            .background(Color("ColorPink"))
-                            .foregroundColor(.white)
-                        
-                        Spacer()
-                        
-                        // MESSAGE
-                        VStack(alignment: .center,spacing: 16) {
-                            Image("gfx-seven-reel")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(maxHeight: 72)
-                            
-                            Text("Bad luck! You lost all of the coins. \nLet's play again!")
-                                .font(.system(.body, design: .rounded))
-                                .lineLimit(2)
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(.gray)
-                                .layoutPriority(1)
-                            
-                            Button(action: {
-                                self.showingModel = false
-                                self.animatingModel = false
-                                self.activateBet10()
-                                self.coins = 100
-                            }, label: {
-                                Text("New Game".uppercased())
-                                    .font(.system(.body, design: .rounded))
-                                    .fontWeight(.semibold)
-                                    .accentColor(Color("ColorPink"))
-                                    .padding(.horizontal, 12)
-                                    .padding(.vertical, 8)
-                                    .frame(minWidth: 128)
-                                    .background(
-                                        Capsule()
-                                            .stroke(lineWidth: 1.75)
-                                            .foregroundColor(Color("ColorPink"))
-                                    )
-                            })
-                        }
-                        
-                        Spacer()
+                    Spacer()
+                    
+                    // MESSAGE
+                    VStack(alignment: .center, spacing: 16) {
+                      Image("gfx-seven-reel")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxHeight: 72)
+                      
+                      Text("Bad luck! You lost all of the coins. \nLet's play again!")
+                        .font(.system(.body, design: .rounded))
+                        .lineLimit(2)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(Color.gray)
+                        .layoutPriority(1)
+                      
+                      Button(action: {
+                        self.showingModel = false
+                        self.animatingModel = false
+                        self.activateBet10()
+                        self.coins = 100
+                      }) {
+                        Text("New Game".uppercased())
+                          .font(.system(.body, design: .rounded))
+                          .fontWeight(.semibold)
+                          .accentColor(Color("ColorPink"))
+                          .padding(.horizontal, 12)
+                          .padding(.vertical, 8)
+                          .frame(minWidth: 128)
+                          .background(
+                            Capsule()
+                              .strokeBorder(lineWidth: 1.75)
+                              .foregroundColor(Color("ColorPink"))
+                          )
+                      }
                     }
-                    .frame(minWidth: 280, idealWidth: 280, maxWidth: 320, minHeight: 260, idealHeight: 280, maxHeight: 320, alignment: .center)
-                    .background(.white)
-                    .cornerRadius(20)
-                    .shadow(color: Color("ColorTransparentBlack"), radius: 6, x: 0, y: 8)
-                    .opacity($animatingModel.wrappedValue ? 1 : 0)
-                    .offset(y: $animatingModel.wrappedValue ? 0 : -100)
-                    .animation(Animation.spring(response: 0.6, dampingFraction: 1.0, blendDuration: 1.0))
-                    .onAppear(perform: {
-                        self.animatingModel = true
-                    })
+                    
+                    Spacer()
+                  }
+                  .frame(minWidth: 280, idealWidth: 280, maxWidth: 320, minHeight: 260, idealHeight: 280, maxHeight: 320, alignment: .center)
+                  .background(Color.white)
+                  .cornerRadius(20)
+                  .shadow(color: Color("ColorTransparentBlack"), radius: 6, x: 0, y: 8)
+                  .opacity($animatingModel.wrappedValue ? 1 : 0)
+                  .offset(y: $animatingModel.wrappedValue ? 0 : -100)
+                  .animation(Animation.spring(response: 0.6, dampingFraction: 1.0, blendDuration: 1.0), value: showingModel)
+                  .onAppear(perform: {
+                    self.animatingModel = true
+                  })
                 }
-            }
+              }
             
         } //: ZSTACK
         .sheet(isPresented: $showingInfoView) {
